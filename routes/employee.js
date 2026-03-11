@@ -20,4 +20,16 @@ router.post('/', async (request, response) => {
     }
 });
 
+router.patch('/:id/fire', async (request, response) => {
+    const id = request.params.id;
+
+    try {
+        const employee = await Employee.findByPk(id);
+        await employee.update({ is_fired: 1 });
+        response.json(employee);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
 module.exports = router;
