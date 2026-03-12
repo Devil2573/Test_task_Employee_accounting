@@ -61,12 +61,16 @@ async function loadEmployees() {
 }
 
 loadEmployees();
+setDefaultContact();
+function setDefaultContact(){
+    contactInfoInput.value = '+7 ('
+}
 
 function resetForm() {
     formTitle.textContent = 'Добавить сотрудника';
     submitBtn.textContent = 'Сохранить';
     form.reset();
-
+    setDefaultContact();
 }
 
 cancelEditBtn.addEventListener('click', resetForm);
@@ -191,3 +195,39 @@ async function FilterEmployees() {
 filterDepartment.addEventListener('input', FilterEmployees);
 filterPosition.addEventListener('input', FilterEmployees);
 searchInput.addEventListener('input', FilterEmployees);
+
+passportInput.addEventListener('input', function() {
+    let val = this.value.replace(/\D/g, '');
+    if (val.length > 4) {
+        val = val.substring(0, 4) + ' ' + val.substring(4, 10);
+    }
+    this.value = val;
+});
+
+contactInfoInput.addEventListener('input', function() {
+    let value = this.value.replace(/\D/g, '');
+    let formatted = '';
+
+    if (value.length > 0) {
+        if (value[0] === '7' || value[0] === '8') {
+            formatted = '+7';
+            value = value.substring(1);
+        } else {
+            formatted = '+7';
+        }
+
+
+        formatted += ' (' + value.substring(0, 3);
+        if (value.length >= 4) {
+            formatted += ') ' + value.substring(3, 6);
+        }
+        if (value.length >= 7) {
+            formatted += '-' + value.substring(6, 8);
+        }
+        if (value.length >= 9) {
+            formatted += '-' + value.substring(8, 10);
+        }
+        
+    }
+    this.value = formatted;
+});
