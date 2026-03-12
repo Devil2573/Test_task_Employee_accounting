@@ -13,6 +13,8 @@
         <h2 id="form-title">Добавить сотрудника</h2>
         <form id="employee-form">
 
+            <input type="hidden" id="employee-id">
+
             <label>ФИО:</label>
             <input type="text" id="full-name" required>
         
@@ -40,8 +42,10 @@
             <label>Дата принятия на работу:</label>
             <input type="date" id="hire-date" required>
             
-            <button type="submit" id="submit-btn">Сохранить</button>
-            <button type="button" id="cancel-edit" style="display:none;">Отмена</button>
+            <div class="form-buttons">
+                <button type="submit" id="submit-btn">Сохранить</button>
+                <button type="button" id="cancel-edit">Отмена</button>
+            </div>
         </form>
     </div>
 
@@ -52,14 +56,11 @@
             <label>Фильтр по должности:</label>
             <input type="text" id="filter-position" placeholder="Должность">
 
-        <button id="apply-filters">Применить фильтры</button>
-        <button id="clear-filters">Сбросить</button>
     </div>
 
     <div class="search">
+        <label>Поиск по ФИО:</label>
         <input type="text" id="search-input" placeholder="Поиск по ФИО">
-        <button id="search-btn">Найти</button>
-        <button id="clear-search">Сбросить поиск</button>
     </div>
 
     <table id="employees-table">

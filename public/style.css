@@ -1,0 +1,57 @@
+.form {
+    margin-bottom: 30px;
+    width: 50%;
+    margin: auto;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.filters {
+    display: flex;
+    margin: auto;
+    gap: 10px;
+    width: 75%;
+    align-items: center;
+}
+
+.search {
+    margin: auto;
+    width: 25%;
+}
+
+.form-buttons {
+    text-align: center;
+    margin-top: 5px;
+    padding-bottom: 10px;
+}
+
+.form-buttons button {
+    display: inline-block;
+    width: auto;
+    padding: 10px 10px;
+    margin: 0 5px;
+}
+
+table {
+    margin: auto;
+    width: 100%;
+    padding: 20px;
+}
+
+tr.fired {
+    text-decoration: line-through;
+    color: #ff8282;
+}
