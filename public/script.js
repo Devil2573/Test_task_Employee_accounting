@@ -15,6 +15,10 @@ const positionInput = document.getElementById('position');
 const salaryInput = document.getElementById('salary');
 const hireDateInput = document.getElementById('hire-date');
 
+const filterDepartment = document.getElementById('filter-department');
+const filterPosition = document.getElementById('filter-position');
+const searchInput = document.getElementById('search-input');
+
 function renderTable(employees) {
     tableBody.innerHTML = '';
     console.log(employees)
@@ -58,11 +62,11 @@ async function loadEmployees() {
 
 loadEmployees();
 
-
 function resetForm() {
     formTitle.textContent = 'Добавить сотрудника';
     submitBtn.textContent = 'Сохранить';
     form.reset();
+
 }
 
 cancelEditBtn.addEventListener('click', resetForm);
@@ -150,3 +154,40 @@ window.editEmployee = async function(id) {
         console.error('edit_error:', error);
     }
 };
+
+async function FilterEmployees() {
+    try {
+        const response = await fetch('/employee');
+        const employees = await response.json();
+        
+        let filtered = employees;
+
+        const deptFilter = filterDepartment.value.trim().toLowerCase();
+        const posFilter = filterPosition.value.trim().toLowerCase();
+        const searchQuery = searchInput.value.trim().toLowerCase();
+
+        if (deptFilter) {
+            filtered = filtered.filter(emp => 
+                emp.department.toLowerCase().includes(deptFilter)
+            );
+        }
+        if (posFilter) {
+            filtered = filtered.filter(emp => 
+                emp.position.toLowerCase().includes(posFilter)
+            );
+        }
+        if (searchQuery) {
+            filtered = filtered.filter(emp => 
+                emp.full_name.toLowerCase().includes(searchQuery)
+            );
+        }
+
+        renderTable(filtered);
+    } catch (error) {
+        console.error('filter_error:', error);
+    }
+}
+
+filterDepartment.addEventListener('input', FilterEmployees);
+filterPosition.addEventListener('input', FilterEmployees);
+searchInput.addEventListener('input', FilterEmployees);
