@@ -1,7 +1,10 @@
 const tableBody = document.getElementById('table-body');
 const form = document.getElementById('employee-form');
+const formTitle = document.getElementById('form-title');
+const submitBtn = document.getElementById('submit-btn');
 const cancelEditBtn = document.getElementById('cancel-edit');
 
+const employeeIdInput = document.getElementById('employee-id');
 const fullNameInput = document.getElementById('full-name');
 const birthDateInput = document.getElementById('birth-date');
 const passportInput = document.getElementById('passport');
@@ -11,8 +14,6 @@ const departmentInput = document.getElementById('department');
 const positionInput = document.getElementById('position');
 const salaryInput = document.getElementById('salary');
 const hireDateInput = document.getElementById('hire-date');
-
-
 
 function renderTable(employees) {
     tableBody.innerHTML = '';
@@ -57,7 +58,10 @@ async function loadEmployees() {
 
 loadEmployees();
 
+
 function resetForm() {
+    formTitle.textContent = 'Добавить сотрудника';
+    submitBtn.textContent = 'Сохранить';
     form.reset();
 }
 
@@ -78,18 +82,34 @@ form.addEventListener('submit', async (e) => {
         hire_date: hireDateInput.value
     };
 
-    try {
-        const response = await fetch(`/employee`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(employeeData)
-        });
-        resetForm();
-        loadEmployees();
-    } catch (error) {
-        console.error('submit_error:',error)
-    }
+    const id = employeeIdInput.value;
 
+    if(!id){
+        try {
+            const response = await fetch(`/employee`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(employeeData)
+            });
+            resetForm();
+            loadEmployees();
+        } catch (error) {
+            console.error('submit_error:',error)
+        }
+    }else{
+        try {
+            const response = await fetch(`/employee/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(employeeData)
+            });
+            resetForm();
+            loadEmployees();
+
+        } catch (error) {
+            console.error('submit_error:',error)
+        }
+    }
 });
 
 
@@ -103,5 +123,30 @@ window.fireEmployee = async function(id) {
         loadEmployees();
     } catch (error) {
         console.error('fire_error:',error)
+    }
+};
+
+window.editEmployee = async function(id) {
+    try {
+        const response = await fetch(`/employee/${id}`);
+        const emp = await response.json();
+        if (!emp) return;
+
+        employeeIdInput.value = emp.id;
+        fullNameInput.value = emp.full_name;
+        birthDateInput.value = emp.birth_date;
+        passportInput.value = emp.passport;
+        contactInfoInput.value = emp.contact_info;
+        contactInfoInput.dispatchEvent(new Event("input"))
+        addressInput.value = emp.address;
+        departmentInput.value = emp.department;
+        positionInput.value = emp.position;
+        salaryInput.value = emp.salary;
+        hireDateInput.value = emp.hire_date;
+
+        formTitle.textContent = 'Редактировать сотрудника';
+        submitBtn.textContent = 'Обновить';
+    } catch (error) {
+        console.error('edit_error:', error);
     }
 };

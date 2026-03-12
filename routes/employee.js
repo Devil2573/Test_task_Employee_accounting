@@ -11,6 +11,15 @@ router.get('/', async (request, response) => {
     }
 });
 
+router.get('/:id', async (request, response) => {
+    try {
+        const employee = await Employee.findByPk(request.params.id);
+        response.json(employee);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
 router.post('/', async (request, response) => {
     try {
         const newEmployee = await Employee.create(request.body);
@@ -21,11 +30,20 @@ router.post('/', async (request, response) => {
 });
 
 router.patch('/:id/fire', async (request, response) => {
-    const id = request.params.id;
 
     try {
-        const employee = await Employee.findByPk(id);
+        const employee = await Employee.findByPk(request.params.id);
         await employee.update({ is_fired: 1 });
+        response.json(employee);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+router.put('/:id', async (request, response) => {
+    try {
+        const employee = await Employee.findByPk(request.params.id);
+        await employee.update(request.body);
         response.json(employee);
     } catch (err) {
         console.log(err);
